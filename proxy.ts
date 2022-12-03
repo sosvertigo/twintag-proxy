@@ -34,10 +34,9 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     })
   }
 
-
   const headers = new Headers()
   return new Response(null, {
-    status: 200,
+    status: 404,
     headers: headers
   })
 }
