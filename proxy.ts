@@ -17,7 +17,10 @@ const test = async (url:string) => {
 function handler(req: Request, connInfo: ConnInfo): Response {
   console.log(req, connInfo)
 
-  // test('https://twintag.io')
+  const url = new URL(req.url)
+  if (url.pathname === '/test') {
+    test('https://twintag.io')
+  }
 
   const headers = new Headers()
   return new Response(null, {
