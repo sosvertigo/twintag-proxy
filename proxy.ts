@@ -14,12 +14,16 @@ const test = async (url:string) => {
   }
 }
 
-function handler(req: Request, connInfo: ConnInfo): Response {
+async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
   console.log(req, connInfo)
 
   const url = new URL(req.url)
   if (url.pathname === '/test') {
-    test('https://twintag.io')
+    const result = await test('https://twintag.io')
+    console.log(result)
+    return new Response(result, {
+      status: 200,
+    })
   }
 
   const headers = new Headers()
