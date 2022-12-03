@@ -26,6 +26,15 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     })
   }
 
+  if (url.pathname === '/admin') {
+    const result = await test('https://admin.twintag.io')
+    console.log(result)
+    return new Response(result, {
+      status: 200,
+    })
+  }
+
+
   const headers = new Headers()
   return new Response(null, {
     status: 200,
