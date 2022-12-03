@@ -17,7 +17,7 @@ const test = async (url:string) => {
 function handler(req: Request, connInfo: ConnInfo): Response {
   console.log(req, connInfo)
 
-  test('https://twintag.io')
+  // test('https://twintag.io')
 
   const headers = new Headers()
   return new Response(null, {
