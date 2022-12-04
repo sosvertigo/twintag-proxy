@@ -34,6 +34,14 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     })
   }
 
+  if (url.pathname === '/qid') {
+    const result = await test('https://sosvertigo-prd.twintag.io/8034d649f75604970f32ef892c759f69')
+    console.log(result)
+    return new Response(result, {
+      status: 200,
+    })
+  }
+
   const headers = new Headers()
   return new Response(null, {
     status: 404,
