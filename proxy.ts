@@ -35,7 +35,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
   }
 
   if (url.pathname === '/qid') {
-    const result = await test('https://testwiab.twintag.io/c2cc271e3ffdab6ac0d4627d4a382aa9')
+    const result = await test('https://testwiab.twintag.io/test')
     console.log(result)
     return new Response(result, {
       status: 200,
