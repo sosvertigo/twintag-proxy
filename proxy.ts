@@ -21,6 +21,7 @@ const forward = async (url:string) => {
     headers.set('x-twintag-method', 'GET')
     const rsp = await fetch('https://worker-proxy.sosvertigo.workers.dev', {
       method: 'GET',
+      headers: headers,
     })
     return new Response(rsp.body, {
       headers: rsp.headers,
