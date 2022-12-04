@@ -35,7 +35,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
   }
 
   if (url.pathname === '/qid') {
-    const result = await test('https://qr.exxonmobilchemical.com/466fb0aff0fc2a7d40132ea546bb31ac')
+    const result = await test('https://exxonmobilchemical.com')
     console.log(result)
     return new Response(result, {
       status: 200,
