@@ -35,7 +35,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
   }
 
   if (url.pathname === '/qid') {
-    const result = await test('https://testwiab.twintag.io/test')
+    const result = await test('https://twintag.io/notfound')
     console.log(result)
     return new Response(result, {
       status: 200,
