@@ -8,9 +8,25 @@ const test = async (url:string) => {
       h += `${header[0]}: ${header[1]}\n`
     }
     const text = await rsp.text()
-    return `${url}\n${rsp.status}\n${h}\n${text.length} body bytes\n${text}\n${rsp.headers.length}`
+    return `${url}\n${rsp.status}\n${h}\n${text.length} body bytes\n${text}\n`
   } catch(err) {
     return `${err}`
+  }
+}
+
+const forward = async (url:string) => {
+  try {
+    const headers = new Headers()
+    headers.set('x-twintag-url', url)
+    headers.set('x-twintag-method', 'GET')
+    const rsp = await fetch('https://worker-proxy.sosvertigo.workers.dev', {
+      method: 'GET',
+    })
+    return new Response(rsp.body, {
+      headers: rsp.headers,
+    })
+  } catch(err) {
+    return new Response(err, {status:502})
   }
 }
 
@@ -21,33 +37,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
   if (url.pathname === '/test') {
     const result = await test('https://twintag.io')
     console.log(result)
-    return new Response(result, {
-      status: 200,
-    })
-  }
-
-  if (url.pathname === '/admin') {
-    const result = await test('https://admin.twintag.io')
-    console.log(result)
-    return new Response(result, {
-      status: 200,
-    })
-  }
-
-  if (url.pathname === '/qid') {
-    const result = await test('https://sosvertigo-prd.twintag.io/8034d649f75604970f32ef892c759f69')
-    console.log(result)
-    return new Response(result, {
-      status: 200,
-    })
-  }
-
-  if (url.pathname === '/it') {
-    const result = await test('https://twintag.it')
-    console.log(result)
-    return new Response(result, {
-      status: 200,
-    })
+    return forward('https://twintag.io')
   }
 
   const headers = new Headers()
