@@ -8,7 +8,7 @@ const test = async (url:string) => {
       h += `${header[0]}: ${header[1]}\n`
     }
     const text = await rsp.text()
-    return `${url}\n${rsp.status}\n${h}\n${text.length} body bytes\n${text}`
+    return `${url}\n${rsp.status}\n${h}\n${text.length} body bytes\n${text}\n${rsp.headers.length}`
   } catch(err) {
     return `${err}`
   }
