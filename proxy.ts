@@ -42,6 +42,14 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     })
   }
 
+  if (url.pathname === '/it') {
+    const result = await test('https://twintag.it')
+    console.log(result)
+    return new Response(result, {
+      status: 200,
+    })
+  }
+
   const headers = new Headers()
   return new Response(null, {
     status: 404,
