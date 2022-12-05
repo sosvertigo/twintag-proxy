@@ -19,6 +19,7 @@ const forward = async (url:string) => {
     const headers = new Headers()
     headers.set('x-twintag-url', url)
     headers.set('x-twintag-method', 'GET')
+    headers.set('x-twintag-denodeploy-trace', `${Math.floor(Date.now())}`)
     const rsp = await fetch('https://worker-proxy.sosvertigo.workers.dev', {
       method: 'GET',
       headers: headers,
