@@ -1,8 +1,10 @@
 import { serve,  type ConnInfo } from "https://deno.land/std@0.152.0/http/server.ts";
 
-const test = async (url:string) => {
+const test = async (url:string, method:string) => {
   try {
-    const rsp = await fetch(url)
+    const rsp = await fetch(url, {
+      method: method,
+    })
     let h = ''
     for (const header of rsp.headers) {
       h += `${header[0]}: ${header[1]}\n`
@@ -14,14 +16,14 @@ const test = async (url:string) => {
   }
 }
 
-const forward = async (url:string) => {
+const forward = async (url:string, method:string) => {
   try {
     const headers = new Headers()
     headers.set('x-twintag-url', url)
     headers.set('x-twintag-method', 'GET')
     headers.set('x-twintag-denodeploy-trace', `${Math.floor(Date.now())}`)
     const rsp = await fetch('https://worker-proxy.sosvertigo.workers.dev', {
-      method: 'POST',
+      method: method,
       headers: headers,
     })
     return new Response(rsp.body, {
@@ -37,9 +39,9 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
 
   const url = new URL(req.url)
   if (url.pathname === '/test') {
-    const result = await test('https://twintag.io/ABCD')
+    const result = await test('https://twintag.io/ABCD', 'POST')
     console.log(result)
-    return forward('https://twintag.io/ABCD')
+    return forward('https://twintag.io/ABCD', 'POST')
   }
 
   const headers = new Headers()
