@@ -1,24 +1,7 @@
 import { serve,  type ConnInfo } from "https://deno.land/std@0.152.0/http/server.ts";
 
-const test = async (url:string, method:string) => {
+const forward = async (url:string, method:string, headers = new Headers()) => {
   try {
-    const rsp = await fetch(url, {
-      method: method,
-    })
-    let h = ''
-    for (const header of rsp.headers) {
-      h += `${header[0]}: ${header[1]}\n`
-    }
-    const text = await rsp.text()
-    return `${url}\n${rsp.status}\n${h}\n${text.length} body bytes\n${text}\n`
-  } catch(err) {
-    return `${err}`
-  }
-}
-
-const forward = async (url:string, method:string) => {
-  try {
-    const headers = new Headers()
     headers.set('x-twintag-url', url)
     headers.set('x-twintag-method', method)
     headers.set('x-twintag-denodeploy-trace', `${Math.floor(Date.now())}`)
@@ -39,9 +22,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
 
   const url = new URL(req.url)
   if (url.pathname === '/test') {
-    const result = await test('https://twintag.io/ABCD', 'POST')
-    console.log(result)
-    return forward('https://twintag.io/ABCD', 'POST')
+    return await forward('https://twintag.io/ABCD', 'POST')
   }
 
   const headers = new Headers()
@@ -50,7 +31,6 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     headers: headers
   })
 }
-
 
 serve(handler, {
   hostname: '127.0.0.1',
