@@ -1,13 +1,10 @@
 import { serve,  type ConnInfo } from "https://deno.land/std@0.152.0/http/server.ts";
 
-const forward = async (url:string, method:string) => {
+const forward = async () => {
   try {
     const headers = new Headers()
-    headers.set('x-twintag-url', url)
-    headers.set('x-twintag-method', method)
     headers.set('x-twintag-denodeploy-trace', `${Math.floor(Date.now())}`)
     const rsp = await fetch('https://worker-proxy.sosvertigo.workers.dev', {
-      method: method,
       headers: headers,
     })
     return new Response(rsp.body, {
@@ -23,7 +20,7 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
 
   const url = new URL(req.url)
   if (url.pathname === '/test') {
-    return await forward('https://twintag.io/ABCD', 'POST')
+    return await forward()
   }
 
   return new Response(null, { status: 404 } )
