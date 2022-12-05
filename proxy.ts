@@ -1,7 +1,8 @@
 import { serve,  type ConnInfo } from "https://deno.land/std@0.152.0/http/server.ts";
 
-const forward = async (url:string, method:string, headers = new Headers()) => {
+const forward = async (url:string, method:string) => {
   try {
+    const headers = new Headers()
     headers.set('x-twintag-url', url)
     headers.set('x-twintag-method', method)
     headers.set('x-twintag-denodeploy-trace', `${Math.floor(Date.now())}`)
@@ -25,16 +26,10 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     return await forward('https://twintag.io/ABCD', 'POST')
   }
 
-  const headers = new Headers()
-  return new Response(null, {
-    status: 404,
-    headers: headers
-  })
+  return new Response(null, { status: 404 } )
 }
 
 serve(handler, {
-  hostname: '127.0.0.1',
-  port: 8000,
   onListen: ({ port, hostname }) => { 
     console.log("Listening on", hostname, 'port', port)
   }
