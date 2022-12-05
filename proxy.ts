@@ -36,9 +36,9 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
 
   const url = new URL(req.url)
   if (url.pathname === '/test') {
-    const result = await test('https://twintag.io')
+    const result = await test('https://twintag.io/ABCD')
     console.log(result)
-    return forward('https://twintag.io')
+    return forward('https://twintag.io/ABCD')
   }
 
   const headers = new Headers()
