@@ -69,8 +69,9 @@ async function handler(req: Request, connInfo: ConnInfo): Promise<Response> {
     return await forward()
   }
 
-  if (url.pathname === '/deno') {
-    test('https://7588-87-67-226-224.eu.ngrok.io/', 'POST')
+  if (url.pathname === '/ngrok') {
+    const text = await test('https://7588-87-67-226-224.eu.ngrok.io/', 'POST')
+    return new Response(text, { status: 200 } )
   }
 
   return new Response(null, { status: 404 } )
